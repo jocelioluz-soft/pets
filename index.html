@@ -1,165 +1,318 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Pets - Loja Online de Petshop</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      background-color: #e6f0ff; /* azul clarinho */
-      color: #003366; /* azul escuro */
-    }
-    header {
-      background-color: #0059b3;
-      color: white;
-      padding: 20px 10px;
-      text-align: center;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    }
-    header h1 {
-      margin: 0;
-      font-size: 3em;
-      letter-spacing: 4px;
-    }
-    nav {
-      background-color: #003366;
-      padding: 10px 0;
-      text-align: center;
-    }
-    nav a {
-      color: white;
-      margin: 0 20px;
-      font-weight: bold;
-      text-decoration: none;
-      font-size: 1.1em;
-      transition: color 0.3s;
-    }
-    nav a:hover {
-      color: #99bbff;
-    }
-    .container {
-      max-width: 1100px;
-      margin: auto;
-      padding: 20px;
-    }
-    .products {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-    }
-    .product-card {
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      padding: 15px;
-      text-align: center;
-      transition: transform 0.3s;
-    }
-    .product-card:hover {
-      transform: translateY(-5px);
-    }
-    .product-card img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      border-radius: 10px;
-      margin-bottom: 15px;
-    }
-    .product-card h3 {
-      margin: 10px 0 5px 0;
-      font-size: 1.3em;
-    }
-    .product-card p.price {
-      color: #0074D9;
-      font-weight: bold;
-      font-size: 1.2em;
-      margin-bottom: 15px;
-    }
-    .product-card button {
-      background-color: #0059b3;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      padding: 12px 25px;
-      font-size: 1em;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    .product-card button:hover {
-      background-color: #003366;
-    }
-    footer {
-      background-color: #003366;
-      color: white;
-      text-align: center;
-      padding: 15px 10px;
-      margin-top: 40px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Focinho & Cia - Pet Shop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{
+  --branco:#ffffff;
+  --gelo:#f2fbfb;
+  --tinta:#0f3141;
+  --azul:#2f6fed;
+  --azul-fundo:#eaf1ff;
+  --ciano:#0fb6a6;
+  --ciano-fundo:#e4faf6;
+  --apagado:#5c7480;
+  --borda:#dcebee;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--branco);color:var(--tinta);
+  font-family:"Nunito Sans",system-ui,sans-serif;font-size:1.05rem;line-height:1.6;
+}
+:focus-visible{outline:3px solid var(--ciano);outline-offset:3px}
+h1,h2,h3{font-family:"Baloo 2",sans-serif;font-weight:700}
+.pagina{max-width:1100px;margin:0 auto;padding:0 24px}
+
+/* Topo */
+header{padding:52px 0 40px;display:flex;flex-wrap:wrap;align-items:center;gap:32px;justify-content:space-between}
+.header-texto{flex:1 1 340px}
+.eyebrow{color:var(--ciano);font-weight:700}
+h1{font-size:clamp(2.4rem,6vw,3.6rem);line-height:1.05;color:var(--tinta);margin-top:6px}
+h1 span{color:var(--azul)}
+.lema{margin-top:14px;max-width:34em;color:var(--apagado);font-size:1.1rem}
+.mascote{flex:0 0 auto;width:150px;height:150px}
+
+/* Ferramentas de busca */
+.ferramentas{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin:20px 0 6px;padding-top:24px;border-top:1px solid var(--borda)}
+.busca{
+  flex:1 1 240px;background:var(--gelo);border:1px solid var(--borda);color:var(--tinta);
+  font:inherit;padding:11px 16px;border-radius:999px;
+}
+.busca::placeholder{color:var(--apagado)}
+.abas{display:flex;flex-wrap:wrap;gap:8px}
+.aba{
+  background:var(--branco);border:1px solid var(--borda);color:var(--azul);
+  font:inherit;font-weight:600;padding:9px 16px;cursor:pointer;border-radius:999px;
+  transition:background .2s,color .2s,border-color .2s;
+}
+.aba:hover{background:var(--azul-fundo)}
+.aba[aria-pressed="true"]{background:var(--azul);border-color:var(--azul);color:#fff}
+.status{color:var(--apagado);font-style:italic;min-height:1.6em;margin:10px 0 0}
+
+/* Seções de produto */
+section.produtos{margin-top:44px}
+section.produtos h2{font-size:1.7rem;display:flex;align-items:center;gap:10px}
+.grade{display:grid;gap:18px;margin-top:18px;grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
+
+.item{
+  background:var(--branco);border:1px solid var(--borda);border-radius:18px;
+  padding:0 0 16px;display:flex;flex-direction:column;gap:6px;overflow:hidden;
+}
+.item .capa{
+  height:96px;display:flex;align-items:center;justify-content:center;font-size:2.6rem;
+  background:linear-gradient(135deg,var(--azul-fundo),var(--ciano-fundo));
+}
+.item .corpo{padding:14px 18px 0;display:flex;flex-direction:column;gap:6px;flex:1}
+.item h3{font-size:1.2rem;color:var(--tinta)}
+.desc{color:var(--apagado);font-size:.95rem}
+.preco{font-family:"Baloo 2",sans-serif;font-size:1.5rem;color:var(--azul);margin-top:auto}
+.dados{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;font-size:.9rem}
+.dados dt{color:var(--apagado)}
+.selo{display:inline-block;padding:2px 10px;border-radius:999px;font-size:.82rem;width:fit-content;font-weight:600}
+.selo.ok{color:var(--ciano);background:var(--ciano-fundo)}
+.selo.alerta{color:#b5730c;background:#fdf1de}
+.selo.acabou{color:#c0392b;background:#fbe6e3}
+.vazio{padding:40px 0;text-align:center;color:var(--apagado);font-style:italic}
+
+/* Cuidados com pets */
+section.cuidados{margin-top:64px;background:var(--gelo);border-radius:24px;padding:36px 30px}
+section.cuidados h2{font-size:1.8rem}
+section.cuidados > p{color:var(--apagado);margin-top:6px;max-width:40em}
+.grade-cuidados{display:grid;gap:18px;margin-top:22px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+.cuidado{background:var(--branco);border:1px solid var(--borda);border-radius:16px;padding:18px 20px}
+.cuidado .topo{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.cuidado .topo span.icone{font-size:1.7rem}
+.cuidado h3{font-size:1.15rem}
+.cuidado ul{padding-left:1.1em;color:var(--apagado);font-size:.95rem;display:flex;flex-direction:column;gap:4px}
+
+footer{margin-top:70px;padding:26px 0 40px;border-top:1px solid var(--borda);text-align:center;color:var(--apagado);font-size:.92rem}
+
+@media (prefers-reduced-motion:no-preference){
+  .mascote .orelha{transform-origin:50% 100%;animation:balancar 3.4s ease-in-out infinite}
+  .mascote .orelha.direita{animation-delay:.4s}
+  @keyframes balancar{0%,100%{transform:rotate(0deg)}50%{transform:rotate(-6deg)}}
+}
+</style>
 </head>
 <body>
-
+<div class="pagina">
   <header>
-    <h1>Pets</h1>
-    <p>Loja Online de Produtos para seu Pet</p>
+    <div class="header-texto">
+      <p class="eyebrow">Focinho &amp; Cia</p>
+      <h1>Tudo para o seu <span>bicho de estimação</span> feliz</h1>
+      <p class="lema">Ração, brinquedos, higiene e acessórios, além de dicas de cuidado para cada tipo de pet.</p>
+    </div>
+    <svg class="mascote" viewBox="0 0 160 160" role="img" aria-label="Ilustração de um cachorro fofo azul e ciano">
+      <ellipse class="orelha esquerda" cx="46" cy="52" rx="18" ry="26" fill="#2f6fed"/>
+      <ellipse class="orelha direita" cx="114" cy="52" rx="18" ry="26" fill="#0fb6a6"/>
+      <circle cx="80" cy="86" r="52" fill="#eaf1ff"/>
+      <circle cx="80" cy="86" r="52" fill="none" stroke="#0fb6a6" stroke-width="3"/>
+      <circle cx="62" cy="80" r="6" fill="#0f3141"/>
+      <circle cx="98" cy="80" r="6" fill="#0f3141"/>
+      <ellipse cx="80" cy="98" rx="10" ry="7" fill="#0f3141"/>
+      <path d="M62 112 Q80 126 98 112" stroke="#0f3141" stroke-width="3" fill="none" stroke-linecap="round"/>
+    </svg>
   </header>
 
-  <nav>
-    <a href="#produtos">Produtos</a>
-    <a href="#contato">Contato</a>
-  </nav>
-
-  <div class="container">
-
-    <section id="produtos">
-      <h2>Produtos</h2>
-      <div class="products">
-
-        <div class="product-card">
-          <img src="https://place-puppy.com/300x200" alt="Ração premium para cães" />
-          <h3>Ração Premium para Cães</h3>
-          <p class="price">R$ 120,00</p>
-          <button>Adicionar ao Carrinho</button>
-        </div>
-
-        <div class="product-card">
-          <img src="https://placekitten.com/300/200" alt="Brinquedo para gatos" />
-          <h3>Brinquedo para Gatos</h3>
-          <p class="price">R$ 35,00</p>
-          <button>Adicionar ao Carrinho</button>
-        </div>
-
-        <div class="product-card">
-          <img src="https://place-puppy.com/301x201" alt="Cama confortável para pets" />
-          <h3>Cama Confortável para Pets</h3>
-          <p class="price">R$ 250,00</p>
-          <button>Adicionar ao Carrinho</button>
-        </div>
-
-        <div class="product-card">
-          <img src="https://place-puppy.com/302x202" alt="Coleira com identificação" />
-          <h3>Coleira com Identificação</h3>
-          <p class="price">R$ 45,00</p>
-          <button>Adicionar ao Carrinho</button>
-        </div>
-
-      </div>
-    </section>
-
-    <section id="contato" style="margin-top: 40px;">
-      <h2>Contato</h2>
-      <p>Rua das Flores, 123 - Centro</p>
-      <p>Telefone: (83) 9999-9999</p>
-      <p>Email: contato@pets.com.br</p>
-    </section>
-
+  <div class="ferramentas">
+    <input class="busca" id="busca" type="search" placeholder="Buscar produto..." aria-label="Buscar produto">
+    <div class="abas" id="abas"></div>
   </div>
+  <p class="status" id="status" role="status">Carregando a loja...</p>
 
-  <footer>
-    <p>© 2026 Pets Petshop. Todos os direitos reservados.</p>
-  </footer>
+  <main id="lista"></main>
 
+  <section class="cuidados">
+    <h2>Cuidados por tipo de pet</h2>
+    <p>Um resumo rápido para orientar o dono. Não substitui uma consulta com o veterinário.</p>
+    <div class="grade-cuidados">
+      <article class="cuidado">
+        <div class="topo"><span class="icone">🐶</span><h3>Cães</h3></div>
+        <ul>
+          <li>Passeios diários, de acordo com o porte e a energia da raça</li>
+          <li>Vacinas e vermífugos em dia, com acompanhamento veterinário</li>
+          <li>Escovação de pelo e dentes algumas vezes por semana</li>
+        </ul>
+      </article>
+      <article class="cuidado">
+        <div class="topo"><span class="icone">🐱</span><h3>Gatos</h3></div>
+        <ul>
+          <li>Caixa de areia limpa, trocada com frequência</li>
+          <li>Arranhadores para preservar móveis e unhas saudáveis</li>
+          <li>Ambiente enriquecido, com alturas para escalar e observar</li>
+        </ul>
+      </article>
+      <article class="cuidado">
+        <div class="topo"><span class="icone">🐦</span><h3>Aves</h3></div>
+        <ul>
+          <li>Gaiola espaçosa, com poleiros de tamanhos variados</li>
+          <li>Dieta variada, além da ração, com frutas e verduras liberadas</li>
+          <li>Banho de sol indireto e proteção contra correntes de ar</li>
+        </ul>
+      </article>
+      <article class="cuidado">
+        <div class="topo"><span class="icone">🐠</span><h3>Peixes</h3></div>
+        <ul>
+          <li>Troca parcial da água do aquário toda semana</li>
+          <li>Filtro e temperatura adequados à espécie</li>
+          <li>Alimentação em pequenas quantidades, sem excessos</li>
+        </ul>
+      </article>
+      <article class="cuidado">
+        <div class="topo"><span class="icone">🐹</span><h3>Roedores</h3></div>
+        <ul>
+          <li>Gaiola com forração para cavar e se esconder</li>
+          <li>Roda de exercício e brinquedos para roer</li>
+          <li>Água fresca disponível o dia todo</li>
+        </ul>
+      </article>
+      <article class="cuidado">
+        <div class="topo"><span class="icone">🐢</span><h3>Répteis</h3></div>
+        <ul>
+          <li>Temperatura e umidade controladas conforme a espécie</li>
+          <li>Iluminação UVB adequada para a saúde óssea</li>
+          <li>Terrário limpo, com esconderijos disponíveis</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <footer>Focinho &amp; Cia, projeto de Banco de Dados. Feito com carinho para os bichanos.</footer>
+</div>
+
+<script>
+// ============ CONFIGURAÇÃO DO SUPABASE ============
+// Pegue a chave em: Project Settings > API > "anon public"
+const SUPABASE_URL = "https://btqsubtnvlztypbbqqtf.supabase.co";
+const SUPABASE_KEY = "COLE_AQUI_SUA_ANON_KEY";
+const TABELA = "produtos_petshop";
+// ==================================================
+
+const CATEGORIAS = [
+  {id:"racao",     nome:"Ração e Petiscos", icone:"🍖"},
+  {id:"brinquedo", nome:"Brinquedos",       icone:"🎾"},
+  {id:"higiene",   nome:"Higiene e Banho",  icone:"🧴"},
+  {id:"acessorio", nome:"Acessórios",       icone:"🦴"},
+  {id:"saude",     nome:"Saúde e Bem-estar",icone:"💊"}
+];
+
+// Dados de exemplo, usados se a chave ainda não foi colocada
+const DEMO = [
+  {id:1,produto:"Ração Premium Cães Adultos 15kg",categoria:"racao",descricao:"Frango e arroz, para porte médio e grande",peso:15,valor:189.9,quantidade_estoque:40,data_de_validade:"2027-03-01",fornecedor:"NutriPet"},
+  {id:2,produto:"Petisco Bifinho Frango",categoria:"racao",descricao:"Pacote com 12 unidades",peso:0.24,valor:14.9,quantidade_estoque:120,data_de_validade:"2027-01-15",fornecedor:"NutriPet"},
+  {id:3,produto:"Bolinha de Borracha Resistente",categoria:"brinquedo",descricao:"Para cães de médio a grande porte",valor:24.9,quantidade_estoque:60,fornecedor:"Brincar Pet"},
+  {id:4,produto:"Varinha com Pena para Gatos",categoria:"brinquedo",descricao:"Estimula o instinto de caça",valor:19.9,quantidade_estoque:75,fornecedor:"Brincar Pet"},
+  {id:5,produto:"Shampoo Neutro 500ml",categoria:"higiene",descricao:"Para cães e gatos de pele sensível",ml:500,valor:32.9,quantidade_estoque:50,data_de_validade:"2028-02-10",fornecedor:"Banho Feliz"},
+  {id:6,produto:"Areia Higiênica Aglomerante 4kg",categoria:"higiene",descricao:"Controle de odor por até 7 dias",peso:4,valor:27.9,quantidade_estoque:90,fornecedor:"Banho Feliz"},
+  {id:7,produto:"Coleira Ajustável com Guia",categoria:"acessorio",descricao:"Nylon reforçado, tamanho M",valor:39.9,quantidade_estoque:35,fornecedor:"Passeio Certo"},
+  {id:8,produto:"Comedouro Duplo Inox",categoria:"acessorio",descricao:"Antiderrapante, fácil de higienizar",valor:44.9,quantidade_estoque:28,fornecedor:"Casa Pet"},
+  {id:9,produto:"Vermífugo Oral Cães",categoria:"saude",descricao:"Comprimido único, uso a cada 3 meses",valor:29.9,quantidade_estoque:0,data_de_validade:"2027-06-01",fornecedor:"VidaPet"},
+  {id:10,produto:"Suplemento Ômega 3 Pets",categoria:"saude",descricao:"Pele e pelo saudáveis, 60 cápsulas",valor:54.9,quantidade_estoque:22,data_de_validade:"2027-09-01",fornecedor:"VidaPet"}
+];
+
+let produtos = [];
+let categoriaAtual = "todas";
+
+const $ = s => document.querySelector(s);
+const esc = t => String(t ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const dinheiro = v => Number(v).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+const num = v => Number(v).toLocaleString("pt-BR",{maximumFractionDigits:3});
+const dataBR = d => d ? new Date(d + "T00:00:00").toLocaleDateString("pt-BR") : "sem data";
+
+function medida(p){
+  const partes = [];
+  if (p.peso != null)   partes.push(num(p.peso) + " kg");
+  if (p.litro != null)  partes.push(num(p.litro) + " L");
+  else if (p.ml != null) partes.push(num(p.ml) + " ml");
+  return partes.join(" / ") || "unidade";
+}
+
+function selo(p){
+  if ((p.quantidade_estoque ?? 0) <= 0) return `<span class="selo acabou">Sem estoque</span>`;
+  if (!p.data_de_validade) return `<span class="selo ok">Disponível</span>`;
+  const hoje = new Date(); hoje.setHours(0,0,0,0);
+  const dias = Math.round((new Date(p.data_de_validade + "T00:00:00") - hoje) / 86400000);
+  if (dias < 0)  return `<span class="selo acabou">Vencido</span>`;
+  if (dias <= 15) return `<span class="selo alerta">Vence em ${dias} dias</span>`;
+  return `<span class="selo ok">Válido até ${dataBR(p.data_de_validade)}</span>`;
+}
+
+function cartao(p, icone){
+  return `<article class="item">
+    <div class="capa" aria-hidden="true">${icone}</div>
+    <div class="corpo">
+      <h3>${esc(p.produto)}</h3>
+      ${p.descricao ? `<p class="desc">${esc(p.descricao)}</p>` : ""}
+      ${selo(p)}
+      <dl class="dados">
+        <dt>Medida</dt><dd>${esc(medida(p))}</dd>
+        <dt>Estoque</dt><dd>${esc(p.quantidade_estoque ?? 0)} un.</dd>
+        ${p.fornecedor ? `<dt>Marca</dt><dd>${esc(p.fornecedor)}</dd>` : ""}
+      </dl>
+      <p class="preco">${dinheiro(p.valor)}</p>
+    </div>
+  </article>`;
+}
+
+function desenhar(){
+  const termo = $("#busca").value.trim().toLowerCase();
+  const filtrados = produtos.filter(p =>
+    (categoriaAtual === "todas" || p.categoria === categoriaAtual) &&
+    (!termo || (p.produto || "").toLowerCase().includes(termo))
+  );
+
+  let html = "";
+  CATEGORIAS.forEach(c => {
+    const grupo = filtrados.filter(p => p.categoria === c.id);
+    if (!grupo.length) return;
+    html += `<section class="produtos">
+      <h2>${c.icone} ${c.nome} <span style="color:var(--apagado);font-family:'Nunito Sans',sans-serif;font-weight:400;font-size:1rem">(${grupo.length})</span></h2>
+      <div class="grade">${grupo.map(p => cartao(p, c.icone)).join("")}</div>
+    </section>`;
+  });
+  $("#lista").innerHTML = html || `<p class="vazio">Nenhum produto encontrado. Tente outra busca ou categoria.</p>`;
+}
+
+function montarAbas(){
+  const abas = [{id:"todas", nome:"Tudo", icone:"🐾"}, ...CATEGORIAS];
+  $("#abas").innerHTML = abas.map(a =>
+    `<button class="aba" data-cat="${a.id}" aria-pressed="${a.id === categoriaAtual}">${a.icone} ${a.nome}</button>`).join("");
+  document.querySelectorAll(".aba").forEach(b => b.addEventListener("click", () => {
+    categoriaAtual = b.dataset.cat;
+    document.querySelectorAll(".aba").forEach(x => x.setAttribute("aria-pressed", x === b));
+    desenhar();
+  }));
+}
+
+async function carregar(){
+  montarAbas();
+  $("#busca").addEventListener("input", desenhar);
+
+  if (SUPABASE_KEY.startsWith("COLE_AQUI")) {
+    produtos = DEMO;
+    $("#status").textContent = "Modo demonstração: cole sua anon key no script para ler o estoque real do Supabase.";
+    return desenhar();
+  }
+  try {
+    const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    const { data, error } = await db.from(TABELA).select("*");
+    if (error) throw error;
+    produtos = data || [];
+    $("#status").textContent = `${produtos.length} produtos na loja.`;
+  } catch (e) {
+    console.error(e);
+    produtos = DEMO;
+    $("#status").textContent = "Não foi possível falar com o Supabase (veja o console, F12). Mostrando dados de exemplo.";
+  }
+  desenhar();
+}
+carregar();
+</script>
 </body>
 </html>
